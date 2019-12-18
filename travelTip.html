@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body onload="init()">
+    <header class="flex space-between">
+        <h1>TravelTip</h1>
+        <div class="nav-container">
+            <input type="text" class="search-input" placeholder="Enter Location">
+            <button href="" class="nav-btn" onclick="onSearch()">Go</button>
+            <button class="nav-btn" onclick="onGetCurrLocation()">My location</button>
+        </div>
+    </header>
+    <main>
+        <div class="location-container flex space-between">
+            <h2 class="curr-location"></h2>
+            <button href="" class="copy-btn">Copy location</button>
+        </div>
+        <div class="list-container flex space-between">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Info</th>
+                        <th scope="col">Wheater</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="user-table">
+                </tbody>
+            </table>
+            <div id="map"></div>
+        </div>
+    </main>
+    <script src="lib/axios.js"></script>
+    <script src="lib/swal.js"></script>
+    <script src="cmps/LocationPreview.js"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIvc2-vZY5K76K9fS1Mz2mEOLCjm1t6c0&callback=initMap"></script>
+    <script src="js/mapService.js"></script>
+    <script src="js/travelController.js"></script>
+
+</body>
+
+</html>

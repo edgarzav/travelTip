@@ -1,0 +1,30 @@
+body{
+    background-color: rgb(253, 127, 42);
+}
+#map {
+    height: 400px;  /* The height is 400 pixels */
+    width: 50%;  /* The width is the width of the web page */
+   }
+
+   .table{
+       background-color: #fff;
+       width: 500px;
+   }
+
+   button{
+       text-decoration: none;
+       padding: 10px;
+       height: 40px;
+   }
+
+   .flex{
+       display: flex;
+   }
+
+   .space-between{
+    justify-content: space-between;
+   }
+
+   header{
+    align-items: center;
+   }
