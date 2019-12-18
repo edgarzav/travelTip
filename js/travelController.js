@@ -1,11 +1,15 @@
 
 function init() {
     initMap();
+ 
+    
+}
+
+function onCopyClipboard(){
     const urlParams = new URLSearchParams(window.location.search);
     const myParam = urlParams.get('myParam');
-    var foo = getParameterByName('foo');
-    console.log(foo);
-    
+    var foo = getParameterByName('myParam');
+    console.log(urlParams);
 }
 
 function getParameterByName(name, url) {

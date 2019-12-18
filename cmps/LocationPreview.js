@@ -4,7 +4,7 @@ class LocationPreview {
         this.location = location;
     }
 
-    onDeleteLocation = (event)=>{
+    onDeleteLocation = (event) => {
         deleteLocation(this.location);
         renderList();
         event.stopPropagation();
