@@ -8,19 +8,23 @@ function initMap() {
         zoom: 12,
         center: eilat
     });
-
-
-    google.maps.event.addListener(gMap, 'click', function (event) {
-        let lat = event.latLng.lat();
-        let lng = event.latLng.lng();
-        getGeoAddress(lat, lng)
-            .then(ans => renderCurrLocation(ans))
-            .then(ans => addLocation(ans))
-    });
 }
+
+function getMap() {
+    return gMap
+}
+
+function getPlacesToRender() {
+    return gLocations;
+}
+
 function addLocation(location) {
     gLocations.push(createLocation(location))
     renderList()
+}
+
+function createLocation(location) {
+    return { id: 0, info: location }
 }
 
 function deleteLocation(location) {
@@ -32,27 +36,10 @@ function findTodoIndexById(locationId) {
     return gLocations.findIndex(location => locationId === location.id)
 }
 
-function getPlacesToRender() {
-    return gLocations;
-}
-
-function createLocation(location) {
-    return {
-        id: gIdx++,
-        info: location
-    }
-}
-
-function renderCurrLocation(location) {
-    document.querySelector('.curr-location').innerHTML = location
-    return location
-}
-
-
 function getGeoAddress(lat, lng) {
-    var prmAns = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyAIvc2-vZY5K76K9fS1Mz2mEOLCjm1t6c0`)
+    const prmAns = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyAIvc2-vZY5K76K9fS1Mz2mEOLCjm1t6c0`)
     return prmAns.then((response) => {
-        let { data } = response
+        const { data } = response
         return data.results[0].formatted_address
     })
         .catch(err => {
@@ -60,31 +47,31 @@ function getGeoAddress(lat, lng) {
         })
 }
 
-
-function searchAddress(address) {
-    getGeoLatLng(address)
-        .then(ans => setLocation(ans))
-}
-
-
 function getGeoLatLng(searchedAddress) {
-    var prmAns = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=1600+${searchedAddress}&key=AIzaSyAIvc2-vZY5K76K9fS1Mz2mEOLCjm1t6c0`)
+    const prmAns = axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${searchedAddress}&key=AIzaSyAIvc2-vZY5K76K9fS1Mz2mEOLCjm1t6c0`)
     return prmAns.then((response) => {
-        let { data } = response
-        console.log(data);
+        const { data } = response
         return data.results[0].geometry.location
-        // return data.results[0].formatted_address
     })
         .catch(err => {
             console.error(err);
         })
 }
 
-function setLocation(pos) {
-    gMap.setCenter(new google.maps.LatLng(pos.lat, pos.lng));
+function searchAddress(address) {
+    getGeoLatLng(address)
+        .then(ans => centerLocation(ans))
 }
 
-function centerUserLocation() {
+
+function centerLocation(pos) {
+    gMap.setCenter(new google.maps.LatLng(pos.lat, pos.lng));
+    gMap.setZoom(15);
+    gMap.setCenter(pos);
+}
+
+
+function centerCurrLocation() {
     const infoWindow = new google.maps.InfoWindow;
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -107,8 +94,6 @@ function centerUserLocation() {
     }
 }
 
-
-
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
     infoWindow.setContent(browserHasGeolocation ?
@@ -124,7 +109,6 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         'Error: The Geolocation service failed.' :
         'Error: Your browser doesn\'t support geolocation.');
     infoWindow.open(gMap);
-
 }
 
 

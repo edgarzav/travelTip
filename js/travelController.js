@@ -1,25 +1,63 @@
-
+'use strict'
 function init() {
     initMap();
- 
-    
+    initMapListener()
 }
 
-function onCopyClipboard(){
-    const urlParams = new URLSearchParams(window.location.search);
-    const myParam = urlParams.get('myParam');
-    var foo = getParameterByName('myParam');
-    console.log(urlParams);
+function initMapListener() {
+    const map = getMap()
+    google.maps.event.addListener(map, 'click', function (event) {
+        var prmUserDecision = Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        })
+        prmUserDecision.then((result) => {
+            if (result.value) {
+                getGeoAddress(event.latLng.lat(), event.latLng.lng())
+                    .then(ans => renderCurrLocation(ans))
+                    .then(ans => addLocation(ans))
+                Swal.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            }
+        })
+    });
 }
 
-function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, '\\$&');
-    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+
+function renderCurrLocation(location) {
+    document.querySelector('.curr-location').innerHTML = location
+    return location
+}
+
+function onDeleteAll() {
+    var prmUserDecision = Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    })
+    prmUserDecision.then((result) => {
+        if (result.value) {
+            document.querySelector('.team-list').innerHTML = '';
+
+            Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+            )
+        }
+    })
 }
 
 function onSearch() {
@@ -38,7 +76,7 @@ function renderList() {
 }
 
 function onGetCurrLocation() {
-    centerUserLocation()
+    centerCurrLocation()
 }
 
 

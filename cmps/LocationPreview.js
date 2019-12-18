@@ -1,6 +1,7 @@
 'use strict'
 class LocationPreview {
     constructor(location) {
+        this.id = getRandomID()
         this.location = location;
     }
 
@@ -12,10 +13,9 @@ class LocationPreview {
 
     render() {
         const { location } = this;
-
         const elTr = document.createElement('tr');
         elTr.innerHTML = `
-        <td>${location.id}</td>
+        <td>${this.id}</td>
         <td>${location.info}</td>
         <td><button class="delete-btn">Delete</button></td>
         `
